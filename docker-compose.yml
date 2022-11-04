@@ -8,4 +8,4 @@ services:
     ports:
       - 8888:8888
     container_name: python3-practice
-    # tty: true
+    tty: true
