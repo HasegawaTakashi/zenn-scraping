@@ -55,10 +55,13 @@ docker_url = 'https://zenn.dev/topics/docker'
 docker_str = 'docker'
 linux_url = 'https://zenn.dev/topics/linux'
 linux_str = 'linux'
+git_url = 'https://zenn.dev/topics/git'
+git_str = 'git'
 
 python = Scraping.scrape(python_url, python_str)
 docker = Scraping.scrape(docker_url, docker_str)
 linux = Scraping.scrape(linux_url, linux_str)
+git = Scraping.scrape(git_url, git_str)
 
 
 #r = requests.get('https://nikkei225jp.com/chart/')
