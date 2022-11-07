@@ -51,9 +51,10 @@ class Scraping:
                     break
 
         # 変数d_listを使って、データフレームを作成する
-        # df = pd.DataFrame(d_list)
+        df = pd.DataFrame(d_list)
+
         # to_csv()を使って、データフレームをCSV出力する
-        # df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
+        df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
 
         print(string, 'is success')
 
