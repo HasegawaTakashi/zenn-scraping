@@ -7,7 +7,7 @@ import datetime
 class Scraping:
 
     
-    def scrape(url, string):
+    def scrape(string, url):
         # 変数d_listに空のリストを作成する
         d_list = []
         #ページ番号i
@@ -51,26 +51,29 @@ class Scraping:
                     break
 
         # 変数d_listを使って、データフレームを作成する
-        df = pd.DataFrame(d_list)
+        # df = pd.DataFrame(d_list)
         # to_csv()を使って、データフレームをCSV出力する
-        df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
+        # df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
 
-python_url = 'https://zenn.dev/topics/python'
-python_str = 'python'
-docker_url = 'https://zenn.dev/topics/docker'
-docker_str = 'docker'
-linux_url = 'https://zenn.dev/topics/linux'
-linux_str = 'linux'
-git_url = 'https://zenn.dev/topics/git'
-git_str = 'git'
-sql_url = 'https://zenn.dev/topics/sql'
-sql_str = 'sql'
+        print(string, 'is success')
 
-python = Scraping.scrape(python_url, python_str)
-docker = Scraping.scrape(docker_url, docker_str)
-linux = Scraping.scrape(linux_url, linux_str)
-git = Scraping.scrape(git_url, git_str)
-sql = Scraping.scrape(sql_url, sql_str)
+scraping_lists = [
+        'python',
+        'docker',
+        'linux',
+        'git',
+        'sql',
+]
+num = 0
+
+for list in scraping_lists:
+    urls = f'https://zenn.dev/topics/{scraping_lists[num]}'
+
+    print(list)
+    print(urls)
+
+    python = Scraping.scrape(list, urls)
+    num += 1
 
 
 #r = requests.get('https://nikkei225jp.com/chart/')
