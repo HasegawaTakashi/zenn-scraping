@@ -5,7 +5,20 @@ services:
     volumes:
       - ./src/python/:/tmp/src/python
     working_dir: /tmp/src/python
-    ports:
-      - 8888:8888
     container_name: python3-practice
+    links:
+      - mysql
+    tty: true
+  mysql:
+    container_name: mysql_zenn
+    image: mysql:5.7.22
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: zenn
+      MYSQL_USER: zenn
+      MYSQL_PASSWORD: zenn
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./src/mysql/:/tmp/src/mysql
     tty: true
