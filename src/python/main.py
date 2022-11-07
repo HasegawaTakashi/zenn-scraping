@@ -31,18 +31,23 @@ class Scraping:
             #1秒ウェイトを入れる
             sleep(1)
 
-        for content in contents:
-            link = 'https://zenn.dev' + content.a.get('href')
-            title = content.find('h2').text
-            author = content.find('div', class_='ArticleList_userName__GWXDx').text
-            time = content.time.get('datetime')
-            d = {
-                'title' : title,
-                'author' : author,
-                'link' : link,
-                'time' : time,
-            }
-            d_list.append(d)
+            n = 0
+            for content in contents:
+                if n < 10:    
+                    link = 'https://zenn.dev' + content.a.get('href')
+                    title = content.find('h2').text
+                    author = content.find('div', class_='ArticleList_userName__GWXDx').text
+                    time = content.time.get('datetime')
+                    d = {
+                        'title' : title,
+                        'author' : author,
+                        'link' : link,
+                        'time' : time,
+                    }
+                    d_list.append(d)
+                    n += 1
+                elif n == 10:
+                    break
 
         # 変数d_listを使って、データフレームを作成する
         df = pd.DataFrame(d_list)
@@ -51,20 +56,20 @@ class Scraping:
 
 python_url = 'https://zenn.dev/topics/python'
 python_str = 'python'
-docker_url = 'https://zenn.dev/topics/docker'
-docker_str = 'docker'
-linux_url = 'https://zenn.dev/topics/linux'
-linux_str = 'linux'
-git_url = 'https://zenn.dev/topics/git'
-git_str = 'git'
-sql_url = 'https://zenn.dev/topics/sql'
-sql_str = 'sql'
+# docker_url = 'https://zenn.dev/topics/docker'
+# docker_str = 'docker'
+# linux_url = 'https://zenn.dev/topics/linux'
+# linux_str = 'linux'
+# git_url = 'https://zenn.dev/topics/git'
+# git_str = 'git'
+# sql_url = 'https://zenn.dev/topics/sql'
+# sql_str = 'sql'
 
 python = Scraping.scrape(python_url, python_str)
-docker = Scraping.scrape(docker_url, docker_str)
-linux = Scraping.scrape(linux_url, linux_str)
-git = Scraping.scrape(git_url, git_str)
-sql = Scraping.scrape(sql_url, sql_str)
+# docker = Scraping.scrape(docker_url, docker_str)
+# linux = Scraping.scrape(linux_url, linux_str)
+# git = Scraping.scrape(git_url, git_str)
+# sql = Scraping.scrape(sql_url, sql_str)
 
 
 #r = requests.get('https://nikkei225jp.com/chart/')
