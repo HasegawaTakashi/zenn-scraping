@@ -28,8 +28,8 @@ class Scraping:
             soup = BeautifulSoup(r.text, 'html.parser')
             # ArticleList_itemContainer__xlBMcクラスを持ったdivタグをすべて取得して、変数contentsに格納
             contents = soup.find_all('div', class_='ArticleList_itemContainer__xlBMc')
-            #1秒ウェイトを入れる
-            sleep(1)
+            #3秒ウェイトを入れる
+            sleep(3)
 
             n = 0
             for content in contents:
