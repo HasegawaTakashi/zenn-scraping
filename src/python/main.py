@@ -52,13 +52,6 @@ df = pd.DataFrame(d_list)
 # to_csv()を使って、データフレームをCSV出力する
 df.to_csv('./zenn_python_topics.csv', index=None, encoding='utf-8-sig')
 
-
-# 変数d_listを使って、データフレームを作成する
-# df = pd.DataFrame(d_list)
-
-# to_csv()を使って、データフレームをCSV出力する
-# df.to_csv('ファイルの保存場所/ファイル名.csv', index=None, encoding='utf-8-sig')
-
 #r = requests.get('https://nikkei225jp.com/chart/')
 #text = r.text
 #date = text.split('<div class=wtimeT>')[1].split('</div>')[0]
