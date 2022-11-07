@@ -43,7 +43,7 @@ class Scraping:
                         'title' : title,
                         'author' : author,
                         'link' : link,
-                        'time' : slice_time,
+                        # 'time' : slice_time, # urlにdatetimeが含まれてしまうので改善するまでコメントアウト
                     }
                     d_list.append(d)
                     n += 1
