@@ -7,23 +7,12 @@ import datetime
 class Scraping:
 
     
-    def scrape(string, url):
+    def scraping(string, url):
         # 変数d_listに空のリストを作成する
         d_list = []
-        #ページ番号i
-        i=0
-        # アクセスするためのURLをtarget_urlに格納する 
-        # i +=1
-        # target_url = url.format(i)
-        target_url = url
-        # target_urlへのアクセス結果を、変数rに格納
-        r = requests.get(target_url)
+        r = requests.get(url)
 
         if r.status_code == 200:
-            # print('d_listの大きさ：', len(d_list))
-            # print()してtarget_urlを確認する
-            # print(target_url)
-
             # 取得結果を解析してsoupに格納
             soup = BeautifulSoup(r.text, 'html.parser')
             # ArticleList_itemContainer__xlBMcクラスを持ったdivタグをすべて取得して、変数contentsに格納
@@ -66,17 +55,16 @@ scraping_lists = [
         'sql',
         'web',
 ]
-num = 0
 
+num = 0
 for list in scraping_lists:
     urls = f'https://zenn.dev/topics/{scraping_lists[num]}'
 
     print(list)
     print(urls)
 
-    python = Scraping.scrape(list, urls)
+    python = Scraping.scraping(list, urls)
     num += 1
-
 
 #r = requests.get('https://nikkei225jp.com/chart/')
 #text = r.text
