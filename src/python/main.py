@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 from time import sleep
+import datetime
 
 # 変数urlに、Zenn新着ページのURLを入れる
 # url = 'https://zenn.dev/articles?page={}'
@@ -50,7 +51,7 @@ for list in d_list:
 df = pd.DataFrame(d_list)
 
 # to_csv()を使って、データフレームをCSV出力する
-df.to_csv('./zenn_python_topics.csv', index=None, encoding='utf-8-sig')
+df.to_csv('./' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
 
 #r = requests.get('https://nikkei225jp.com/chart/')
 #text = r.text
