@@ -19,6 +19,7 @@ services:
       MYSQL_PASSWORD: zenn
       MYSQL_ROOT_PASSWORD: root
       TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./src/mysql/:/tmp/src/mysql
     tty: true
