@@ -1,6 +1,7 @@
 version: "3"
 services:
   python-app:
+    restart: always
     build: .
     volumes:
       - ./src/python/:/tmp/src/python
@@ -8,6 +9,8 @@ services:
     container_name: python3-practice
     links:
       - mysql
+    networks:
+      - python_network
   mysql:
     container_name: mysql_zenn
     image: mysql:5.7.22
@@ -22,4 +25,8 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./src/mysql/:/tmp/src/mysql
+      - ./src/mysql/:/tmp/src/mysql/conf.d/my.conf
     tty: true
+networks:
+  python_network:
+    driver: bridge

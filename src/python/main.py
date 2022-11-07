@@ -3,10 +3,21 @@ import requests
 import pandas as pd
 from time import sleep
 import datetime
+import mysql.connector
+
+class connect:
+    cnx = mysql.connector.connect(
+        host = '192.168.2.2',
+        port = '3306',
+        user = 'docker',
+        password = 'docker',
+        database = 'zenn',
+    )
+
+
 
 class Scraping:
 
-    
     def scraping(string, url):
         # 変数d_listに空のリストを作成する
         d_list = []
@@ -22,7 +33,7 @@ class Scraping:
 
             n = 0
             for content in contents:
-                if n < 10:    
+                if n < 10:
                     link = 'https://zenn.dev' + content.a.get('href')
                     title = content.find('h2').text
                     author = content.find('div', class_='ArticleList_userName__GWXDx').text

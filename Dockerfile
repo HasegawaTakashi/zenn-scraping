@@ -11,11 +11,12 @@ RUN apt-get update && \
     chmod +x /tmp/clean-layer.sh && \
     /tmp/clean-layer.sh
 
-# install pip packages. 
+# install pip packages.
 RUN pip3 install --no-cache-dir -r /tmp/requirements_pip.txt && \
+    pip3 install mysql-connector-python && \
     /tmp/clean-layer.sh
 
-# do app code 
+# do app code
 CMD python3 /tmp/src/python/main.py
 
 # do test app code
