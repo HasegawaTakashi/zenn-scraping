@@ -5,14 +5,14 @@ from time import sleep
 import datetime
 import mysql.connector
 
-class connect:
-    cnx = mysql.connector.connect(
-        host = '192.168.2.2',
-        port = '3306',
-        user = 'docker',
-        password = 'docker',
-        database = 'zenn',
-    )
+# class connect:
+#     cnx = mysql.connector.connect(
+#         host = '192.168.2.2',
+#         port = '3306',
+#         user = 'docker',
+#         password = 'docker',
+#         database = 'zenn',
+#     )
 
 
 
@@ -67,6 +67,8 @@ def save_to_csv():
             'git',
             'sql',
             'web',
+            'kubernetes',
+            'aws',
     ]
 
     num = 0
