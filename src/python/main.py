@@ -47,24 +47,28 @@ class Scraping:
 
         print(string, 'is success')
 
-scraping_lists = [
-        'python',
-        'docker',
-        'linux',
-        'git',
-        'sql',
-        'web',
-]
 
-num = 0
-for list in scraping_lists:
-    urls = f'https://zenn.dev/topics/{scraping_lists[num]}'
+def save_to_csv():
+    scraping_lists = [
+            'python',
+            'docker',
+            'linux',
+            'git',
+            'sql',
+            'web',
+    ]
 
-    print(list)
-    print(urls)
+    num = 0
+    for list in scraping_lists:
+        urls = f'https://zenn.dev/topics/{scraping_lists[num]}'
 
-    python = Scraping.scraping(list, urls)
-    num += 1
+        print(list)
+        print(urls)
+
+        python = Scraping.scraping(list, urls)
+        num += 1
+
+save_to_csv()
 
 #r = requests.get('https://nikkei225jp.com/chart/')
 #text = r.text
