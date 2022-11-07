@@ -17,3 +17,6 @@ RUN pip3 install --no-cache-dir -r /tmp/requirements_pip.txt && \
 
 # do app code 
 CMD python3 /tmp/src/python/main.py
+
+# do test app code
+# CMD python3 /tmp/src/python/test.py

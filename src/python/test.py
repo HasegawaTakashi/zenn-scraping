@@ -51,22 +51,3 @@ df = pd.DataFrame(d_list)
 
 # to_csv()を使って、データフレームをCSV出力する
 df.to_csv('./zenn_python_topics.csv', index=None, encoding='utf-8-sig')
-
-
-# 変数d_listを使って、データフレームを作成する
-# df = pd.DataFrame(d_list)
-
-# to_csv()を使って、データフレームをCSV出力する
-# df.to_csv('ファイルの保存場所/ファイル名.csv', index=None, encoding='utf-8-sig')
-
-#r = requests.get('https://nikkei225jp.com/chart/')
-#text = r.text
-#date = text.split('<div class=wtimeT>')[1].split('</div>')[0]
-#nikkei = text.split('<div class=if_cur>')[1].split('</div>')[0].replace(',','')
-#dau = text.split('<div class=if_cur>')[2].split('</div>')[0].replace(',','')
-#kawase = text.split('<div class=if_cur>')[3].split('</div>')[0].replace(',','')
-
-#print('今日は',date,'です')
-#print ('日経株価は ',nikkei, '円です')
-#print ('ダウ平均株価は', dau, '円です')
-#print ('為替ドルは', kawase,'円です')
