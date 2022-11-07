@@ -8,7 +8,6 @@ services:
     container_name: python3-practice
     links:
       - mysql
-    tty: true
   mysql:
     container_name: mysql_zenn
     image: mysql:5.7.22
@@ -19,6 +18,7 @@ services:
       MYSQL_USER: zenn
       MYSQL_PASSWORD: zenn
       MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Tokyo'
     volumes:
       - ./src/mysql/:/tmp/src/mysql
     tty: true
