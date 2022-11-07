@@ -64,6 +64,7 @@ scraping_lists = [
         'linux',
         'git',
         'sql',
+        'web',
 ]
 num = 0
 
