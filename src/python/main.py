@@ -38,11 +38,12 @@ class Scraping:
                     title = content.find('h2').text
                     author = content.find('div', class_='ArticleList_userName__GWXDx').text
                     time = content.time.get('datetime')
+                    slice_time = time[:-15]
                     d = {
                         'title' : title,
                         'author' : author,
                         'link' : link,
-                        'time' : time,
+                        'time' : slice_time,
                     }
                     d_list.append(d)
                     n += 1
