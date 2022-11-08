@@ -14,8 +14,7 @@ services:
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
-      - ./src/mysql/:/tmp/src/mysql
-      - ./src/mysql/:/tmp/src/mysql/conf.d/
+      - ./src/mysql/my.cnf:/tmp/src/mysql/my.cnf
     tty: true
     networks:
       python_network:
