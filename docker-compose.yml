@@ -1,6 +1,7 @@
 version: "3"
 services:
   mysql:
+    build: ./src/mysql
     container_name: mysql_zenn
     image: mysql:5.7
     ports:
@@ -14,14 +15,14 @@ services:
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
       - ./src/mysql/:/tmp/src/mysql
-      - ./src/mysql/my.cnf:/tmp/src/mysql/conf.d/my.cnf
+      - ./src/mysql/:/tmp/src/mysql/conf.d/
     tty: true
     networks:
       python_network:
         ipv4_address: 192.168.2.2
 
   python-app:
-    # restart: always
+    restart: on-failure
     build: .
     volumes:
       - ./src/python/:/tmp/src/python
