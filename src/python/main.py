@@ -5,17 +5,47 @@ from time import sleep
 import datetime
 import mysql.connector
 
-# class connect:
-#     cnx = mysql.connector.connect(
-#         host = '192.168.2.2',
-#         port = '3306',
-#         user = 'docker',
-#         password = 'docker',
-#         database = 'zenn',
-#     )
+class connect:
+    sleep(5)
+    cnx = mysql.connector.connect(
+        host = '192.168.2.2',
+        port = '3306',
+        user = 'root',
+        password = 'root',
+        database = 'zenn',
+    )
+    cursor = cnx.cursor()
+
+    query1 = "CREATE DATABASE IF NOT EXISTS zenn"
+    cursor.execute(query1)
+    print('finished create database')
+
+    # create new table
+    query2 = "CREATE TABLE IF NOT EXISTS article ( \
+    id int not null primary key, \
+    title varchar(100), \
+    author varchar(50), \
+    link varchar(200), \
+    time varchar(50))"
+    cursor.execute(query2)
+    print('finished create table')
+
+    # test insert
+    query3 = "INSERT INTO zenn.article (id, title, author, link, time) values( \
+    3, \
+    'Docker連携リバースプロキシで複数コンテナへのアクセスを簡単にする[Traefik]', \
+    'ArkBig', \
+    'https://zenn.dev/arkbig/articles/traefik_e615f702955ad113e551e2a22f7ff65f10ba1b0bbc', \
+    '2022-11-06');"
+    cursor.execute(query3)
+    cnx.commit()
+    print('finished insert test data')
+
+test = connect()
+print('finished')
 
 
-
+"""
 class Scraping:
 
     def scraping(string, url):
@@ -94,3 +124,4 @@ save_to_csv()
 #print ('日経株価は ',nikkei, '円です')
 #print ('ダウ平均株価は', dau, '円です')
 #print ('為替ドルは', kawase,'円です')
+"""

@@ -12,7 +12,8 @@ RUN apt-get update && \
     /tmp/clean-layer.sh
 
 # install pip packages.
-RUN pip3 install --no-cache-dir -r /tmp/requirements_pip.txt && \
+RUN pip3 install --upgrade setuptools && \
+    pip3 install --no-cache-dir -r /tmp/requirements_pip.txt && \
     pip3 install mysql-connector-python && \
     /tmp/clean-layer.sh
 

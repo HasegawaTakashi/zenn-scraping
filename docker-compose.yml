@@ -1,7 +1,27 @@
 version: "3"
 services:
+  mysql:
+    container_name: mysql_zenn
+    image: mysql:5.7
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: zenn
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./src/mysql/:/tmp/src/mysql
+      - ./src/mysql/my.cnf:/tmp/src/mysql/conf.d/my.cnf
+    tty: true
+    networks:
+      python_network:
+        ipv4_address: 192.168.2.2
+
   python-app:
-    restart: always
+    # restart: always
     build: .
     volumes:
       - ./src/python/:/tmp/src/python
@@ -11,22 +31,12 @@ services:
       - mysql
     networks:
       - python_network
-  mysql:
-    container_name: mysql_zenn
-    image: mysql:5.7.22
-    ports:
-      - "3308:3306"
-    environment:
-      MYSQL_DATABASE: zenn
-      MYSQL_USER: zenn
-      MYSQL_PASSWORD: zenn
-      MYSQL_ROOT_PASSWORD: root
-      TZ: 'Asia/Tokyo'
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - ./src/mysql/:/tmp/src/mysql
-      - ./src/mysql/:/tmp/src/mysql/conf.d/my.conf
-    tty: true
-networks:
+
+networks: 
   python_network:
     driver: bridge
+    ipam:
+      driver: default
+      config:
+       - subnet: 192.168.2.0/24
+         gateway: 192.168.2.1
