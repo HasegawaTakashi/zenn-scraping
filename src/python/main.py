@@ -87,7 +87,12 @@ class Scraping:
         author = d_list[0]['author']
         link = d_list[0]['link']
 
-        query4 = ("INSERT INTO zenn.article(title, author, link) VALUES (%s)", title)
+        query4 ="""
+        set @title = titlee
+        set @author = author
+        set @link = link
+        INSERT INTO zenn.article(title, author, link) VALUES (@title, @author, @link)
+        """
         cursor.execute(query4)
         cnx.commit()
         print('finished insert variable data')
