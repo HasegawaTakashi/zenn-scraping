@@ -6,7 +6,7 @@ import datetime
 import mysql.connector
 
 class connect:
-    sleep(10)
+    sleep(15)
     cnx = mysql.connector.connect(
         host = '192.168.2.2',
         port = '3306',
@@ -22,28 +22,27 @@ class connect:
 
     # create new table
     query2 = "CREATE TABLE IF NOT EXISTS article ( \
-    id int not null primary key, \
+    id int not null auto_increment primary key, \
     title varchar(100), \
     author varchar(50), \
     link varchar(200), \
-    time varchar(50))"
+    created_at datetime not null default current_timestamp)"
     cursor.execute(query2)
     print('finished create table')
 
     # test insert
-    query3 = "INSERT INTO zenn.article (id, title, author, link, time) values( \
-    3, \
+    query3 = "INSERT INTO zenn.article (title, author, link) values( \
     'Docker連携リバースプロキシで複数コンテナへのアクセスを簡単にする[Traefik]', \
     'ArkBig', \
-    'https://zenn.dev/arkbig/articles/traefik_e615f702955ad113e551e2a22f7ff65f10ba1b0bbc', \
-    '2022-11-06');"
+    'https://zenn.dev/arkbig/articles/traefik_e615f702955ad113e551e2a22f7ff65f10ba1b0bbc' \
+    '2022-11-08' \
+    );"
     cursor.execute(query3)
     cnx.commit()
     print('finished insert test data')
 
 test = connect()
 print('finished')
-
 
 """
 class Scraping:
