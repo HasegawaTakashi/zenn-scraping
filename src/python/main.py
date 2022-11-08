@@ -6,7 +6,7 @@ import datetime
 import mysql.connector
 
 class connect:
-    sleep(5)
+    sleep(10)
     cnx = mysql.connector.connect(
         host = '192.168.2.2',
         port = '3306',
