@@ -5,7 +5,13 @@ from time import sleep
 import datetime
 import mysql.connector
 
-sleep(15)
+"""
+databaseの立ち上げまで待機する
+https://docs.docker.com/compose/startup-order/
+上記のラッパーシェルスクリプトをを理解できるまではsleepで対応
+"""
+
+sleep(25)
 class Scraping:
 
     def scraping(table_name, url):
