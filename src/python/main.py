@@ -59,8 +59,8 @@ class Scraping:
         cnx = mysql.connector.connect(
             host = '192.168.2.2',
             port = '3306',
-            user = 'root',
-            password = 'root',
+            user = 'docker',
+            password = 'docker',
             database = 'zenn',
         )
         cursor = cnx.cursor()
