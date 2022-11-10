@@ -73,17 +73,6 @@ class Scraping:
         cursor.execute(query2)
         print('finished create table')
 
-        # test insert
-        # query3 = "INSERT INTO zenn.article (title, author, link) values( \
-        # 'Docker連携リバースプロキシで複数コンテナへのアクセスを簡単にする[Traefik]', \
-        # 'ArkBig', \
-        # 'https://zenn.dev/arkbig/articles/traefik_e615f702955ad113e551e2a22f7ff65f10ba1b0bbc' \
-        # '2022-11-08' \
-        # );"
-        # cursor.execute(query3)
-        # cnx.commit()
-        # print('finished insert test data')
-
         title1 = d_list[0]['title']
         author1 = d_list[0]['author']
         link1 = d_list[0]['link']
@@ -96,15 +85,14 @@ class Scraping:
         author3 = d_list[3]['author']
         link3 = d_list[3]['link']
 
-        # print(title1, author1, link1)
-        # print(title2, author2, link2)
-        # print(title3, author3, link3)
-        
-        records = [
-            (title1, author1, link1),
-            (title2, author2, link2),
-            (title3, author3, link3),
-        ]
+        records = []
+        for i in range(10):
+            title = d_list[i]['title']
+            author = d_list[i]['author']
+            link = d_list[i]['link']
+
+            data = (title, author, link)
+            records.append(data)
 
         query4 =("INSERT INTO zenn.article(title, author, link) VALUES(%s, %s, %s)")
         cursor.executemany(query4, records)
