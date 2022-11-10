@@ -83,17 +83,30 @@ class Scraping:
         # cnx.commit()
         # print('finished insert test data')
 
-        title = d_list[0]['title']
-        author = d_list[0]['author']
-        link = d_list[0]['link']
+        title1 = d_list[0]['title']
+        author1 = d_list[0]['author']
+        link1 = d_list[0]['link']
 
-        query4 ="""
-        set @title = titlee
-        set @author = author
-        set @link = link
-        INSERT INTO zenn.article(title, author, link) VALUES (@title, @author, @link)
-        """
-        cursor.execute(query4)
+        title2 = d_list[2]['title']
+        author2 = d_list[2]['author']
+        link2 = d_list[2]['link']
+
+        title3 = d_list[3]['title']
+        author3 = d_list[3]['author']
+        link3 = d_list[3]['link']
+
+        # print(title1, author1, link1)
+        # print(title2, author2, link2)
+        # print(title3, author3, link3)
+        
+        records = [
+            (title1, author1, link1),
+            (title2, author2, link2),
+            (title3, author3, link3),
+        ]
+
+        query4 =("INSERT INTO zenn.python(title, author, link) VALUES(%s, %s, %s)")
+        cursor.executemany(query4, records)
         cnx.commit()
         print('finished insert variable data')
 
@@ -101,13 +114,13 @@ class Scraping:
 def save_to_csv():
     scraping_lists = [
             'python',
-            'docker',
-            'linux',
-            'git',
-            'sql',
-            'web',
-            'kubernetes',
-            'aws',
+            # 'docker',
+            # 'linux',
+            # 'git',
+            # 'sql',
+            # 'web',
+            # 'kubernetes',
+            # 'aws',
     ]
 
     num = 0

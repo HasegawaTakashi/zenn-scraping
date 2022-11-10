@@ -27,6 +27,7 @@ services:
       - ./src/python/:/tmp/src/python
     working_dir: /tmp/src/python
     container_name: python3-practice
+    image: python3
     links:
       - mysql
     networks:
