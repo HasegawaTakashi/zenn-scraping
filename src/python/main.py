@@ -15,7 +15,8 @@ sleep(25)
 class Scraping:
 
     def scraping(table_name, url):
-        # 変数d_listに空のリストを作成する
+        # スクレイピング希望回数を記述 min: 1, max: 48 (zenn記事1ページ上限48記事のため)
+        item_count = 48
         d_list = []
         r = requests.get(url)
 
@@ -29,7 +30,7 @@ class Scraping:
 
             n = 0
             for content in contents:
-                if n < 10:
+                if n < item_count:
                     link = 'https://zenn.dev' + content.a.get('href')
                     title = content.find('h2').text
                     author = content.find('div', class_='ArticleList_userName__GWXDx').text
@@ -43,7 +44,7 @@ class Scraping:
                     }
                     d_list.append(d)
                     n += 1
-                elif n == 10:
+                elif n == item_count:
                     break
 
         # 変数d_listを使って、データフレームを作成する
@@ -82,7 +83,7 @@ class Scraping:
         print(f'finished create {table_name} table')
 
         records = []
-        for i in range(10):
+        for i in range(item_count):
             title = d_list[i]['title']
             author = d_list[i]['author']
             link = d_list[i]['link']

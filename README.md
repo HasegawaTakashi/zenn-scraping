@@ -17,3 +17,8 @@
 
 * [mysql連携参考](https://takaya030.hatenablog.com/entry/2022/02/11/181847)
 * [もういっちょ](https://qiita.com/harissa/items/117931ed3b15c8e6ad3b)
+* [mysql変数使用](https://www.craneto.co.jp/archives/1219/)
+* [sqlに単なる文字列挿入](https://shunyaueta.com/posts/2021-04-29/)
+* [mysql cursor.execute() method](https://dev.mysql.com/doc/connector-python/en/connector-python-api-mysqlcursor-execute.html)
+* [dbコンテナビルド前に他コンテナビルド始まっちゃう問題](https://docs.docker.com/compose/startup-order/)
+* [docker-compose depends_on 色々分析](https://gotohayato.com/content/533/)
