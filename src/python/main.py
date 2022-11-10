@@ -106,7 +106,7 @@ class Scraping:
             (title3, author3, link3),
         ]
 
-        query4 =("INSERT INTO zenn.python(title, author, link) VALUES(%s, %s, %s)")
+        query4 =("INSERT INTO zenn.article(title, author, link) VALUES(%s, %s, %s)")
         cursor.executemany(query4, records)
         cnx.commit()
         print('finished insert variable data')
