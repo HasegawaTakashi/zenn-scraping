@@ -8,7 +8,7 @@ import mysql.connector
 sleep(15)
 class Scraping:
 
-    def scraping(string, url):
+    def scraping(table_name, url):
         # 変数d_listに空のリストを作成する
         d_list = []
         r = requests.get(url)
@@ -44,9 +44,9 @@ class Scraping:
         df = pd.DataFrame(d_list)
 
         # to_csv()を使って、データフレームをCSV出力する
-        # df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
+        # df.to_csv(f'./csv_files/{list_name}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
 
-        # print(string, 'is success')
+        # print(list_name, 'is success')
         # print(d_list)
 
         cnx = mysql.connector.connect(
@@ -64,26 +64,16 @@ class Scraping:
         print('finished create database')
 
         # create new table
-        query2 = "CREATE TABLE IF NOT EXISTS article ( \
-        id int not null auto_increment primary key, \
-        title varchar(100), \
-        author varchar(50), \
-        link varchar(200), \
-        created_at datetime not null default current_timestamp)"
+        query2 = f"""
+            CREATE TABLE IF NOT EXISTS {table_name} (
+            id int not null auto_increment primary key,
+            title varchar(100),
+            author varchar(50),
+            link varchar(200),
+            created_at datetime not null default current_timestamp)
+        """
         cursor.execute(query2)
-        print('finished create table')
-
-        title1 = d_list[0]['title']
-        author1 = d_list[0]['author']
-        link1 = d_list[0]['link']
-
-        title2 = d_list[2]['title']
-        author2 = d_list[2]['author']
-        link2 = d_list[2]['link']
-
-        title3 = d_list[3]['title']
-        author3 = d_list[3]['author']
-        link3 = d_list[3]['link']
+        print(f'finished create {table_name} table')
 
         records = []
         for i in range(10):
@@ -93,8 +83,9 @@ class Scraping:
 
             data = (title, author, link)
             records.append(data)
+        print(records)
 
-        query4 =("INSERT INTO zenn.article(title, author, link) VALUES(%s, %s, %s)")
+        query4 =(f"INSERT INTO zenn.{table_name}(title, author, link) VALUES(%s, %s, %s)")
         cursor.executemany(query4, records)
         cnx.commit()
         print('finished insert variable data')
@@ -103,13 +94,13 @@ class Scraping:
 def save_to_csv():
     scraping_lists = [
             'python',
-            # 'docker',
-            # 'linux',
-            # 'git',
-            # 'sql',
-            # 'web',
-            # 'kubernetes',
-            # 'aws',
+            'docker',
+            'linux',
+            'git',
+            'mysql',
+            'web',
+            'kubernetes',
+            'aws',
     ]
 
     num = 0
