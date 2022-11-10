@@ -58,6 +58,7 @@ class Scraping:
         )
         cursor = cnx.cursor()
 
+        # create new database
         query1 = "CREATE DATABASE IF NOT EXISTS zenn"
         cursor.execute(query1)
         print('finished create database')
