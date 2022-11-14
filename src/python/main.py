@@ -5,21 +5,18 @@ from time import sleep
 import datetime
 import mysql.connector
 
-# class connect:
-#     cnx = mysql.connector.connect(
-#         host = '192.168.2.2',
-#         port = '3306',
-#         user = 'docker',
-#         password = 'docker',
-#         database = 'zenn',
-#     )
+"""
+databaseの立ち上げまで待機する
+https://docs.docker.com/compose/startup-order/
+上記のラッパーシェルスクリプトをを理解できるまではsleepで対応
+"""
 
-
-
+sleep(25)
 class Scraping:
 
-    def scraping(string, url):
-        # 変数d_listに空のリストを作成する
+    def scraping(table_name, url):
+        # スクレイピング希望回数を記述 min: 1, max: 48 (zenn記事1ページ上限48記事のため)
+        item_count = 48
         d_list = []
         r = requests.get(url)
 
@@ -33,7 +30,7 @@ class Scraping:
 
             n = 0
             for content in contents:
-                if n < 10:
+                if n < item_count:
                     link = 'https://zenn.dev' + content.a.get('href')
                     title = content.find('h2').text
                     author = content.find('div', class_='ArticleList_userName__GWXDx').text
@@ -47,16 +44,58 @@ class Scraping:
                     }
                     d_list.append(d)
                     n += 1
-                elif n == 10:
+                elif n == item_count:
                     break
 
         # 変数d_listを使って、データフレームを作成する
         df = pd.DataFrame(d_list)
 
         # to_csv()を使って、データフレームをCSV出力する
-        df.to_csv(f'./csv_files/{string}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
+        # df.to_csv(f'./csv_files/{list_name}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
 
-        print(string, 'is success')
+        # print(list_name, 'is success')
+        # print(d_list)
+
+        cnx = mysql.connector.connect(
+            host = '192.168.2.2',
+            port = '3306',
+            user = 'docker',
+            password = 'docker',
+            database = 'zenn',
+        )
+        cursor = cnx.cursor()
+
+        # create new database
+        query1 = "CREATE DATABASE IF NOT EXISTS zenn"
+        cursor.execute(query1)
+        print('finished create database')
+
+        # create new table
+        query2 = f"""
+            CREATE TABLE IF NOT EXISTS {table_name} (
+            id int not null auto_increment primary key,
+            title varchar(100),
+            author varchar(50),
+            link varchar(200),
+            created_at datetime not null default current_timestamp)
+        """
+        cursor.execute(query2)
+        print(f'finished create {table_name} table')
+
+        records = []
+        for i in range(item_count):
+            title = d_list[i]['title']
+            author = d_list[i]['author']
+            link = d_list[i]['link']
+
+            data = (title, author, link)
+            records.append(data)
+        print(records)
+
+        query4 =(f"INSERT INTO zenn.{table_name}(title, author, link) VALUES(%s, %s, %s)")
+        cursor.executemany(query4, records)
+        cnx.commit()
+        print('finished insert variable data')
 
 
 def save_to_csv():
@@ -65,7 +104,7 @@ def save_to_csv():
             'docker',
             'linux',
             'git',
-            'sql',
+            'mysql',
             'web',
             'kubernetes',
             'aws',
@@ -82,15 +121,5 @@ def save_to_csv():
         num += 1
 
 save_to_csv()
+print('finished all')
 
-#r = requests.get('https://nikkei225jp.com/chart/')
-#text = r.text
-#date = text.split('<div class=wtimeT>')[1].split('</div>')[0]
-#nikkei = text.split('<div class=if_cur>')[1].split('</div>')[0].replace(',','')
-#dau = text.split('<div class=if_cur>')[2].split('</div>')[0].replace(',','')
-#kawase = text.split('<div class=if_cur>')[3].split('</div>')[0].replace(',','')
-
-#print('今日は',date,'です')
-#print ('日経株価は ',nikkei, '円です')
-#print ('ダウ平均株価は', dau, '円です')
-#print ('為替ドルは', kawase,'円です')
