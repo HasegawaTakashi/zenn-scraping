@@ -82,6 +82,12 @@ class Scraping:
         cursor.execute(query2)
         print(f'finished create {table_name} table')
 
+        # init scraping data
+        query4 = (f"DELETE FROM zenn.{table_name}")
+        cursor.execute(query4)
+        print(f'finished init {table_name} table')
+
+        # insert scraping data
         records = []
         for i in range(item_count):
             title = d_list[i]['title']
@@ -92,8 +98,8 @@ class Scraping:
             records.append(data)
         print(records)
 
-        query4 =(f"INSERT INTO zenn.{table_name}(title, author, link) VALUES(%s, %s, %s)")
-        cursor.executemany(query4, records)
+        query5 =(f"INSERT INTO zenn.{table_name}(title, author, link) VALUES(%s, %s, %s)")
+        cursor.executemany(query5, records)
         cnx.commit()
         print('finished insert variable data')
 
