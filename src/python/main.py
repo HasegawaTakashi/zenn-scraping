@@ -79,6 +79,11 @@ class Scraping:
             query = get_query(query_file_path, table_name)
             cursor.execute(query)
 
+        # init scraping data
+        query4 = (f"DELETE FROM zenn.{table_name}")
+        cursor.execute(query4)
+        print(f'finished init {table_name} table')
+
         # insert scraping data
         records = []
         for i in range(item_count):
