@@ -4,6 +4,8 @@ import pandas as pd
 from time import sleep
 import datetime
 import mysql.connector
+import os
+from dotenv import load_dotenv
 
 """
 databaseの立ち上げまで待機する
@@ -51,17 +53,18 @@ class Scraping:
         df = pd.DataFrame(d_list)
 
         # to_csv()を使って、データフレームをCSV出力する
-        # df.to_csv(f'./csv_files/{list_name}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-8-sig')
+        # df.to_csv(f'./csv_files/{list_name}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-7-sig')
 
         # print(list_name, 'is success')
         # print(d_list)
 
+        load_dotenv()
         cnx = mysql.connector.connect(
-            host = '192.168.2.2',
-            port = '3306',
-            user = 'docker',
-            password = 'docker',
-            database = 'zenn',
+            host = os.environ.get('HOST'),
+            port = os.environ.get('PORT'),
+            user = os.environ.get('USER'),
+            password = os.environ.get('PASSWORD'),
+            database = os.environ.get('DATABASE'),
         )
         cursor = cnx.cursor()
 
@@ -128,4 +131,3 @@ def save_to_csv():
 
 save_to_csv()
 print('finished all')
-
