@@ -6,6 +6,7 @@ import datetime
 import mysql.connector
 import os
 from dotenv import load_dotenv
+import glob
 
 """
 databaseの立ち上げまで待機する
@@ -68,27 +69,15 @@ class Scraping:
         )
         cursor = cnx.cursor()
 
-        # create new database
-        query1 = "CREATE DATABASE IF NOT EXISTS zenn"
-        cursor.execute(query1)
-        print('finished create database')
+        def get_query(query_file_path, table_name):
+            with open(query_file_path, 'r', encoding='utf-8') as f:
+                query = f.read().format(table_name=table_name)
+            return query
 
-        # create new table
-        query2 = f"""
-            CREATE TABLE IF NOT EXISTS {table_name} (
-            id int not null auto_increment primary key,
-            title varchar(100),
-            author varchar(50),
-            link varchar(200),
-            created_at datetime not null default current_timestamp)
-        """
-        cursor.execute(query2)
-        print(f'finished create {table_name} table')
-
-        # init scraping data
-        query4 = (f"DELETE FROM zenn.{table_name}")
-        cursor.execute(query4)
-        print(f'finished init {table_name} table')
+        query_file_paths = glob.glob('sql/*')
+        for query_file_path in query_file_paths:
+            query = get_query(query_file_path, table_name)
+            cursor.execute(query)
 
         # insert scraping data
         records = []
