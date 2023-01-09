@@ -1,0 +1,9 @@
+:source-hightlighter: coderay
+:toc:
+:author: HasegawaTakashi
+:lang: ja
+:doctype: book
+
+= Python, Docker, MySQLで遊ぶ
+
+- Zenn記事をスクレイピングして楽しく読もう
