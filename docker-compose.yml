@@ -5,12 +5,12 @@ services:
     container_name: mysql_zenn
     image: mysql:5.7
     ports:
-      - "3308:3306"
+      - ${MYSQL_PORTS}
     environment:
-      MYSQL_DATABASE: zenn
-      MYSQL_USER: docker
-      MYSQL_PASSWORD: docker
-      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     volumes:
@@ -18,13 +18,13 @@ services:
     tty: true
     networks:
       python_network:
-        ipv4_address: 192.168.2.2
+        ipv4_address: ${IPV4}
 
   metabase:
     container_name: metabase_zenn
     image: metabase/metabase
     ports:
-      - "3000:3000"
+      - ${METABASE_PORTS}
     links:
       - mysql
     networks:
@@ -33,7 +33,7 @@ services:
       - mysql
       # python-app:
       #   condition: service_completed_successfully
-  
+
   python-app:
     restart: on-failure
     build: .
@@ -49,12 +49,11 @@ services:
     depends_on:
       - metabase
 
-
-networks: 
+networks:
   python_network:
     driver: bridge
     ipam:
       driver: default
       config:
-       - subnet: 192.168.2.0/24
-         gateway: 192.168.2.1
+       - subnet: ${SUBNET}
+         gateway: ${GATEWAY}
