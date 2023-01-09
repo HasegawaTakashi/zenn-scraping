@@ -1,12 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
-import pandas as pd
 from time import sleep
-import datetime
 import mysql.connector
 import os
 from dotenv import load_dotenv
-import glob
 
 """
 databaseの立ち上げまで待機する
@@ -17,18 +14,14 @@ https://docs.docker.com/compose/startup-order/
 sleep(25)
 class Scraping:
 
-    def scraping(table_name, url):
-        # スクレイピング希望回数を記述 min: 1, max: 48 (zenn記事1ページ上限48記事のため)
-        item_count = 48
+    def get_data(table_name, url):
+        item_count = 10
         d_list = []
         r = requests.get(url)
 
         if r.status_code == 200:
-            # 取得結果を解析してsoupに格納
             soup = BeautifulSoup(r.text, 'html.parser')
-            # ArticleList_itemContainer__xlBMcクラスを持ったdivタグをすべて取得して、変数contentsに格納
             contents = soup.find_all('div', class_='ArticleList_itemContainer__xlBMc')
-            #3秒ウェイトを入れる
             sleep(3)
 
             n = 0
@@ -50,16 +43,8 @@ class Scraping:
                 elif n == item_count:
                     break
 
-        # 変数d_listを使って、データフレームを作成する
-        df = pd.DataFrame(d_list)
-
-        # to_csv()を使って、データフレームをCSV出力する
-        # df.to_csv(f'./csv_files/{list_name}_' + str(datetime.date.today()) + '.csv', index=None, encoding='utf-7-sig')
-
-        # print(list_name, 'is success')
-        # print(d_list)
-
         load_dotenv()
+        db_name = os.environ.get('DATABASE')
         cnx = mysql.connector.connect(
             host = os.environ.get('HOST'),
             port = os.environ.get('PORT'),
@@ -69,22 +54,16 @@ class Scraping:
         )
         cursor = cnx.cursor()
 
-        def get_query(query_file_path, table_name):
-            with open(query_file_path, 'r', encoding='utf-8') as f:
-                query = f.read().format(table_name=table_name)
-            return query
-
-        query_file_paths = glob.glob('sql/*')
-        for query_file_path in query_file_paths:
-            query = get_query(query_file_path, table_name)
-            cursor.execute(query)
-
-        # init scraping data
-        query4 = (f"DELETE FROM zenn.{table_name}")
-        cursor.execute(query4)
-        print(f'finished init {table_name} table')
-
-        # insert scraping data
+        create_database_query = f"CREATE DATABASE IF NOT EXISTS {db_name}"
+        create_table_query = f"""
+            CREATE TABLE IF NOT EXISTS {db_name}.{table_name} (
+            id int not null auto_increment primary key,
+            title varchar(100),
+            author varchar(50),
+            link varchar(200),
+            created_at datetime not null default current_timestamp)
+        """
+        init_table_query = (f"DELETE FROM {db_name}.{table_name}")
         records = []
         for i in range(item_count):
             title = d_list[i]['title']
@@ -93,15 +72,16 @@ class Scraping:
 
             data = (title, author, link)
             records.append(data)
-        print(records)
+        insert_query =(f"INSERT INTO {db_name}.{table_name}(title, author, link) VALUES(%s, %s, %s)")
 
-        query5 =(f"INSERT INTO zenn.{table_name}(title, author, link) VALUES(%s, %s, %s)")
-        cursor.executemany(query5, records)
+        cursor.execute(create_database_query)
+        cursor.execute(create_table_query)
+        cursor.execute(init_table_query)
+        cursor.executemany(insert_query, records)
         cnx.commit()
-        print('finished insert variable data')
 
 
-def save_to_csv():
+def scraping():
     scraping_lists = [
             'python',
             'docker',
@@ -116,12 +96,8 @@ def save_to_csv():
     num = 0
     for list in scraping_lists:
         urls = f'https://zenn.dev/topics/{scraping_lists[num]}'
-
-        print(list)
-        print(urls)
-
-        python = Scraping.scraping(list, urls)
+        Scraping.get_data(list, urls)
         num += 1
 
-save_to_csv()
+scraping()
 print('finished all')
