@@ -1,5 +1,17 @@
 version: "3"
 services:
+  nginx:
+    build: ./src/nginx
+    container_name: nginx_zenn
+    ports:
+      - ${NGINX_HOST_PORT}:${NGINX_PORT}
+    environment:
+      - NGINX_PORT=${NGINX_PORT}
+      - NGINX_SERVER_NAME=${NGINX_SERVER_NAME}
+    volumes:
+      - ./src/nginx/html:/var/www/html
+      - ./src/nginx/templates/:/etc/nginx/templates/
+
   mysql:
     build: ./src/mysql
     container_name: mysql_zenn
